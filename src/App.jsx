@@ -168,13 +168,45 @@ function App() {
 
       <footer id="about">
 
-        <div className="footer-logo">
-          BRIEFLY<span>.</span>
+        <div className="footer-content">
+
+          <div className="footer-brand">
+
+            <div className="footer-logo">
+              BRIEFLY<span>.</span>
+            </div>
+
+            <p>
+              The world, one story at a time.
+            </p>
+
+          </div>
+
+
+          <div className="footer-links">
+
+            <a href="#">Home</a>
+
+            <a href="#news">News</a>
+
+            <a href="#about">About</a>
+
+          </div>
+
         </div>
 
-        <p>
-          The world, one story at a time.
-        </p>
+
+        <div className="footer-bottom">
+
+          <p>
+            © 2026 Briefly. All rights reserved.
+          </p>
+
+          <p>
+            Stay informed. Stay curious.
+          </p>
+
+        </div>
 
       </footer>
 
