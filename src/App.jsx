@@ -11,9 +11,6 @@ import ErrorMessage from "./components/ErrorMessage";
 import "./App.css";
 
 
-const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
-
-
 function App() {
 
   const [articles, setArticles] = useState([]);
@@ -35,47 +32,13 @@ function App() {
 
     try {
 
-      let url;
-
-
-      if (search.trim() !== "") {
-
-        url =
-          `https://newsapi.org/v2/everything` +
-          `?q=${encodeURIComponent(search)}` +
-          `&language=en` +
-          `&sortBy=publishedAt` +
-          `&pageSize=12` +
-          `&apiKey=${API_KEY}`;
-
-      } else {
-
-        url =
-          `https://newsapi.org/v2/top-headlines` +
-          `?country=us` +
-          `&category=${selectedCategory}` +
-          `&pageSize=12` +
-          `&apiKey=${API_KEY}`;
-
-      }
-
-
-      const response = await fetch(url);
+      const response = await fetch(
+        `${import.meta.env.BASE_URL}news/${selectedCategory}.json`
+      );
 
       const data = await response.json();
 
-
-      if (data.status !== "ok") {
-
-        throw new Error(
-          data.message || "Failed to fetch news"
-        );
-
-      }
-
-
-      setArticles(data.articles);
-
+      setArticles(data);
 
     } catch (error) {
 
@@ -94,18 +57,35 @@ function App() {
   function handleSearch() {
 
     if (search.trim() === "") {
+      getNews();
       return;
     }
 
-    getNews();
+    const filteredArticles = articles.filter(function (article) {
+
+      const title =
+        article.title?.toLowerCase() || "";
+
+      const description =
+        article.description?.toLowerCase() || "";
+
+      const searchText =
+        search.toLowerCase();
+
+      return (
+        title.includes(searchText) ||
+        description.includes(searchText)
+      );
+
+    });
+
+    setArticles(filteredArticles);
   }
 
 
   useEffect(function () {
 
-    if (search.trim() === "") {
-      getNews();
-    }
+    getNews();
 
   }, [selectedCategory]);
 
